@@ -14,10 +14,10 @@ abstract class Env {
     "network": "mumbai",
     "web3Url": "https://polygon-mumbai.infura.io/v3/",
     "web3RdpUrl": "wss://polygon-mumbai.infura.io/v3/",
-    "web3ApiKey": "YOUR_WEB3_API_KEY",
+    "web3ApiKey": "4458cf4d1689497b9a38b1d6bbf05e78",
     "idStateContract": "0x134B1BE34911E39A8397ec6289782989729807a4",
     "ipfsUrl":
-        "https://[YOUR-IPFS-API-KEY]:[YOUR-IPFS-API-KEY-SECRET]@ipfs.infura.io:5001",
+        "https://2fe4d148c51041ad8f11204788f7f3a0:01b320a0091545838cb11d3fb9bcb9aa@ipfs.infura.io:5001",
     "pushUrl": "https://push-staging.polygonid.com/api/v1"
   });
 

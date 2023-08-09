@@ -75,75 +75,34 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 48),
                       ElevatedButton(
                           onPressed: () async {
-                            String? privateKey = await SecureStorage.read(
-                                key: SecureStorageKeys.privateKey);
-
-                            if (privateKey == null) {
-                              log(("Private key not found"));
-                              return;
-                            }
-                            final PolygonIdSdk _polygonIdSdk = PolygonIdSdk.I;
-                            EnvEntity env = await _polygonIdSdk.getEnv();
-
-                            String didIdentifier = await _polygonIdSdk.identity
-                                .getDidIdentifier(
-                                    privateKey: privateKey,
-                                    blockchain: env.blockchain,
-                                    network: env.network);
-                            log('didIdentifier ::-->>>');
-                            log((didIdentifier));
-                            Iden3MessageEntity iden3message =
-                                await PolygonIdSdk.I.iden3comm.getIden3Message(
-                                    message: jsonEncode({
-                              "id": "fb6eeb58-ac3e-4eee-9d6c-184c02d689b0",
-                              "typ": "application/iden3comm-plain-json",
-                              "type":
-                                  "https://iden3-communication.io/credentials/1.0/offer",
-                              "thid": "fb6eeb58-ac3e-4eee-9d6c-184c02d689b0",
-                              "body": {
-                                "url":
-                                    "https://self-hosted-platform.polygonid.me/v1/agent",
-                                "credentials": [
-                                  {
-                                    "id":
-                                        "3e3fd92d-3677-11ee-9b36-0242ac120006",
-                                    "description": "KYCAgeCredential"
-                                  }
-                                ]
-                              },
-                              "from":
+                            //try to generate a claim entity object....
+                            print('c0');
+                            var claim = ClaimEntity(
+                              id: "https://self-hosted-platform.polygonid.me/v1/did:polygonid:polygon:mumbai:2qLhNLVmoQS7pQtpMeKHDqkTcENBZUj1nkZiRNPGgV/claims/3e3fd92d-3677-11ee-9b36-0242ac120006",
+                              issuer:
                                   "did:polygonid:polygon:mumbai:2qLhNLVmoQS7pQtpMeKHDqkTcENBZUj1nkZiRNPGgV",
-                              "to":
-                                  "did:polygonid:polygon:mumbai:2qGfh5zj9SMNhwA5zK9Mv5emGjRAuQbqs5MJs7MszT"
-                            }));
-                            log('iden3message ::-->>');
-                            log((iden3message.toString()));
-                            // if (event.iden3message.messageType !=
-                            //     Iden3MessageType.credentialOffer) {
-                            //   emit(const ClaimsState.error(
-                            //       "Read message is not of type offer"));
-                            //   return;
-                            // }
-
-                            try {
-                              List<ClaimEntity> claimList = await _polygonIdSdk
-                                  .iden3comm
-                                  .fetchAndSaveClaims(
-                                message: iden3message,
-                                genesisDid: didIdentifier,
-                                privateKey: privateKey,
-                              );
-                              print(claimList);
-                              // if (claimList.isNotEmpty) {
-                              //   add(const GetClaimsEvent(), context);
-                              // }
-                            } catch (exception) {
-                              log(exception.toString());
-                              // emit(const ClaimsState.error(
-                              //     CustomStrings.iden3messageGenericError));
-                            }
+                              did:
+                                  "did:polygonid:polygon:mumbai:2qGfh5zj9SMNhwA5zK9Mv5emGjRAuQbqs5MJs7MszT",
+                              state: ClaimState.active,
+                              expiration: "2030-01-01T00:00:00Z",
+                              schema: {
+                                'id':
+                                    "https://raw.githubusercontent.com/iden3/claim-schema-vocab/main/schemas/json/KYCAgeCredential-v3.json",
+                                'type': "JsonSchema2023"
+                              },
+                              type: "KYCAgeCredential",
+                              info: {
+                                'birthday': 19960424,
+                                'documentType': 43153,
+                                'id':
+                                    "did:polygonid:polygon:mumbai:2qGfh5zj9SMNhwA5zK9Mv5emGjRAuQbqs5MJs7MszT",
+                                'type': "KYCAgeCredential"
+                              },
+                            );
+                            List claimList = [claim];
+                            inspect(claim);
                           },
-                          child: Text('fetch credentials'))
+                          child: Text('create claim'))
                     ],
                   ),
                 ),
